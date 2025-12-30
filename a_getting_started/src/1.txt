@@ -1,0 +1,38 @@
+Cargo is Rust’s build system and package manager.
+
+creating a project with cargo:
+cargo new hello_world
+cd hello_world
+
+cargo also initializes a new git repo
+you can override this behavior by using cargo new my_project --vcs=git
+
+what cargo.toml is used for
+Tells Cargo:
+What your project is called
+Which Rust edition to use
+Which libraries to download
+Cargo uses this file for:
+cargo build
+cargo run
+cargo test
+Dependency management
+
+[package] → “About this project”
+
+This section tells Cargo what your project is.
+[dependencies] → “What my project needs to work”
+
+This section tells Cargo which external crates (libraries) your project uses.
+
+if we didnt create a project using cargo new xyz
+then we can add cargo.toml using cargo init
+
+We can create a project using cargo new.
+We can build a project using cargo build.
+We can build and run a project in one step using cargo run.
+We can build a project without producing a binary to check for errors using cargo check.
+Instead of saving the result of the build in the same directory as our code, Cargo stores it in the target/debug directory.
+
+When your project is finally ready for release, you can use cargo build --release to compile it with optimizations. This command will create an executable in target/release instead of target/debug.
+If you’re benchmarking your code’s running time, be sure to run cargo build --release and benchmark with the executable in target/release.
