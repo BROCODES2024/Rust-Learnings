@@ -1,0 +1,34 @@
+use std::io;
+//here std means standard library io library comes with std library
+// By default, Rust has a set of items defined in the standard library that it brings into the scope of every program. 
+// This set is called the prelude.
+// If a type you want to use isn’t in the prelude, you have to bring that type into scope explicitly with a use statement. 
+fn main() {
+    println!("Guess the number!");
+    println!("Please input your guess.");
+    let mut guess = String::new();
+    // above line has created a mutable variable that is currently bound to a new, empty instance of a String.
+    // in rust variables are immutable by default if we want to change value use mut
+    // This new function creates a new, empty string. 
+    // You’ll find a new function on many types because it’s a common name for a function that makes a new value of some kind.
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Failed to read line");
+
+    //stdin() is a function
+    // Read a line of text from the keyboard, store it in guess, and if anything goes wrong, stop the program with an error message.
+    //read_line reads everything user types until they press enter and appends to guess variable
+    //we kept guess variable mutable because we want to change its value here (rust variables are immutable by default)
+    // & indicates that we are passing a reference to the value, rather than the value itself
+    // read_line reurns a Result type which is an enum
+    //enum, which is a type that can be in one of multiple possible states. 
+    // read_line returns a Result, which can be Ok (success) or Err (failure)
+    // expect() is called on the Result to handle Err case
+    // If Err → program crashes and prints the given message in expect()
+    // If Ok → extracts and returns the number of bytes read
+    // If Result is ignored, Rust warns because a possible error was not handled
+    // Using expect is acceptable here because we want the program to stop on failure
+
+
+    println!("You guessed:{guess}");
+}
