@@ -1,49 +1,49 @@
-//we need a crate for random number generation 
-//Remember that a crate is a collection of Rust source code files.
-//to add a crate u can add it in cargo.toml or use cargo add command
-//example: cargo add rand
-//The specifier 0.8.5 is actually shorthand for ^0.8.5, which means any version that is at least 0.8.5 but below 0.9.0.
-//when we build cargo creates a cargo.lock file that records the exact version of each dependency used in the project
-// and in future builds cargo will use the same versions recorded in cargo.lock to ensure reproducible builds.
-//  To upgrade to a new major version (like 0.9), you must change Cargo.toml
-// cargo update will update dependencies to the latest versions allowed by the version specifiers in Cargo.toml
-
+use std::cmp::Ordering;
 use std::io;
-
-use rand::Rng;
+use rand::{Rng, rng};
 
 fn main() {
     println!("Guess the number!");
 
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    let secret_number = rng().random_range(1..=100);
 
-    println!("The secret number is: {secret_number}");
+    loop {
+        println!("Please input your guess.");
 
-    println!("Please input your guess.");
+        let mut guess = String::new();
 
-    let mut guess = String::new();
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+            // _ means anything else
+        };
 
-    println!("You guessed: {guess}");
+        println!("You guessed: {guess}");
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => { 
+                println!("You win!");
+                break;
+            }
+        }
+    }
 }
-
-// Rng is a trait that defines random-number methods like gen_range
-
-// Traits must be in scope to use their methods on a type
-
-// thread_rng() creates a random number generator for the current thread
-
-// gen_range(1..=100) generates a random number between 1 and 100 (inclusive)
-
-// The random number is stored in secret_number
-
-// Printing the secret number is only for debugging and will be removed later
-
-// A trait defines what methods a type can have.
-
-// Functions come from modules, methods often come from traits.
-//cargo doc --open gives you local documentation 
-//so you can learn which traits, methods, and functions a crate provides and how to use them.
+    //cmp is a method which compares two values
+    //match is similar to switch in c++
+    //why match insted of if else , cause match forces us to handle all cases
+    // pattern =>(arm) code ie if this pattern matches run the "code"
+    //here ordering is an enum it has three variants less,greaterm equal
+    // ordering is enum just like result is an enum
+    // since enums represent finite known cases so using match is best option
+    // if using an enum we must handle all variants
+    //we see that guess is already prensent but we again did let guess
+    // helpfully Rust allows us to shadow the previous value of guess with a new one. 
+    //Shadowing lets us reuse the guess variable name rather than forcing us to create two unique variables
+    //trim removes whitespaces and parse converts string to another type
+    //loop keyword creates an infinte loop
